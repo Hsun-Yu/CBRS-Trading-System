@@ -25,10 +25,10 @@ class GAAState(models.Model):
 
 class GAA(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    state = models.ForeignKey(GAAState, default=0, on_delete=models.CASCADE)
+    state = models.ForeignKey(GAAState, default=1, on_delete=models.CASCADE)
     preference = models.ForeignKey(PAL, on_delete=models.CASCADE, default=None, blank=True, null=True)
     def __str__(self):
-        return self.name
+        return self.user.username
 
 class Order(models.Model):
     GAA = models.ForeignKey(GAA, on_delete=models.CASCADE)

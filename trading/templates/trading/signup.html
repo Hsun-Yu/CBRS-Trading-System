@@ -7,8 +7,7 @@
       <div class="card login-wrapper">
         <div class="card-content">
           <div id="CustomerLoginForm">
-            <form method="post" action="/account/login" id="customer_login" accept-charset="UTF-8"><input type="hidden" name="form_type" value="customer_login"><input type="hidden" name="utf8" value="✓">
-
+            <form method="post">
               {% csrf_token %}
               
               <h4 class="center">Sign Up</h4>
@@ -46,27 +45,19 @@
                   </div>
                 </div>
                 <div class="row">
+                  
                   <div class="input-field col s12">
-                    <select id="userselect">
-                      <option value="1">GAA</option>
-                      <option value="2">PAL</option>
-                    </select>
+                    {{ form.userSelect }}
                     <label>User Type Select</label>
                   </div>
                 </div>
                 <div class="row">
                   <div id="preferenceselect" class="input-field col s12">
-                    {% comment %} 
-                    <select>
-                      <option value="1">PAL1</option>
-                      <option value="2">PAL2</option>
-                    </select>
-                     {% endcomment %}
-                     {{ form.preferenceSelect }}
+                    {{ form.preferenceSelect }}
                     <label>Preference</label>
                   </div>
                 </div>
-                <input type="submit" class="btn-large" value="SignUp">
+                <button type="submit" class="btn-large">Sign Up</button>
             </form>
           </div>
         </div>
@@ -76,7 +67,7 @@
 </div>
 
 <script>
-  const selectElement = document.getElementById('userselect');
+  const selectElement = document.getElementById('id_userSelect');
 
   selectElement.addEventListener('change', (event) => {
     if(selectElement.value == '1'){

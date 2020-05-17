@@ -5,8 +5,9 @@ from .models import PAL
 
 
 class SignUpForm(UserCreationForm):
-    preferenceSelect = forms.ModelChoiceField(queryset=PAL.objects.all())
+    userSelect = forms.ChoiceField(choices=[(1, "GAA"), (2, "PAL")])
+    preferenceSelect = forms.ModelChoiceField(queryset=PAL.objects.all(), required=False)
 
     class Meta:
         model = User
-        fields = ('username', 'password1', 'password2', 'preferenceSelect', )
+        fields = ('username', 'password1', 'password2', 'userSelect', 'preferenceSelect', )

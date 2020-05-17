@@ -19,9 +19,16 @@ def signup(request):
             form.save()
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=username, password=raw_password)
-            login(request, user)
-            return redirect('home')
+            userType = form.cleaned_data.get('userSelect')
+            preference = form.cleaned_data.get('preferenceSelect')
+            user = User.objects.get(username=username)
+            if userType == '1':
+                gaa = GAA.objects.create(user=user, preference=preference)
+                GAA.save(gaa)
+            else:
+                pal = PAL.objects.create(user=user)
+                PAL.save(pal)
+            return redirect('trading/login')
     else:
         form = SignUpForm()
     return render(request, 'trading/signup.html', {'form': form})
