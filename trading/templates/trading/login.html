@@ -7,14 +7,22 @@
       <div class="card login-wrapper">
         <div class="card-content">
           <div id="CustomerLoginForm">
-            <form method="post" action="/account/login" id="customer_login" accept-charset="UTF-8"><input type="hidden" name="form_type" value="customer_login"><input type="hidden" name="utf8" value="✓">
+            <form method="post">
+                {% csrf_token %}
                 <h4 class="center">Login</h4>
+                <div class="row">
+                  {% if error_message %}
+                    <p class="bg-danger p-d ml-b">{{ error_message }}</p>
+                  {% endif %}
+                </div>
+
                 <div class="row">
                   <div class="input-field col s12">
                     <label for="CustomerEmail" class="">
                         Username
                     </label>
-                    <input type="text" name="customer[username]" id="CustomerUsername" class="" spellcheck="false" autocomplete="off" autocapitalize="off" autofocus="">
+                    <input type="text" id="id_username" name="username" class="" spellcheck="false" autocomplete="off" autocapitalize="off" autofocus="">
+                    {{ form.username.errors }}
                   </div>
                 </div>
                 <div class="row">
@@ -22,7 +30,13 @@
                     <label for="CustomerPassword">
                     Password
                     </label>
-                    <input type="password" name="customer[password]" id="CustomerPassword" class="">
+                    <input type="password" id="id_password" name="password" class="">
+                    {{ form.password.errors }}
+                  </div>
+                  <div class="row">
+                    {% if form.errors %}
+                      <p>Your username and password didn't match. Please try again.</p>
+                    {% endif %}
                   </div>
                 </div>
                 <input type="submit" class="btn-large" value="Login">

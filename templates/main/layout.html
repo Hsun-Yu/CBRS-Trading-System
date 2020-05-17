@@ -24,7 +24,7 @@
   <nav class="light-blue lighten-1" role="navigation">
     <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">CBRS</a>
       <ul class="right hide-on-med-and-down">
-        <li><a href="#">Login</a></li>
+        <li><a href="/trading/login">Login</a></li>
       </ul>
 
       <ul id="nav-mobile" class="sidenav">
@@ -33,9 +33,20 @@
       <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
     </div>
   </nav>
-  {% block content %}
-  {% endblock content %}
-
+  <div class="section no-pad-bot" id="index-banner">
+    <div class="center-align">
+      {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+    
+    {% block content %}
+    {% endblock content %}
+  </div>
   <footer class="page-footer orange">
     <div class="container">
       <div class="row">
