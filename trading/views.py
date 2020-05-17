@@ -7,3 +7,6 @@ def index(request):
 
 def login(request):
     return render(request, 'trading/login.html')
+
+def signup(request):
+    return render(request, 'trading/signup.html')

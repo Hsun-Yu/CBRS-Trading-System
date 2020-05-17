@@ -1,0 +1,75 @@
+{% extends "main/layout.html" %}
+
+{% block content %}
+
+<div class="section container">
+  <div class="row">
+    <div class="col s12 m6 offset-m3">
+      <div class="card login-wrapper">
+        <div class="card-content">
+          <div id="CustomerLoginForm">
+            <form method="post" action="/account/login" id="customer_login" accept-charset="UTF-8"><input type="hidden" name="form_type" value="customer_login"><input type="hidden" name="utf8" value="✓">
+                <h4 class="center">Sign Up</h4>
+                <div class="row">
+                  <div class="input-field col s12">
+                      <label for="CustomerEmail" class="">
+                          Username
+                      </label>
+                      <input type="text" name="customer[username]" id="CustomerUsername" class="" spellcheck="false" autocomplete="off" autocapitalize="off" autofocus="">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col s12">
+                      <label for="CustomerPassword">
+                      Password
+                      </label>
+                      <input type="password" name="customer[password]" id="CustomerPassword" class="">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col s12">
+                      <label for="CustomerPassword">
+                      Confirm Password
+                      </label>
+                      <input type="password" name="customer[password]" id="CustomerPassword" class="">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col s12">
+                    <select id="userselect">
+                      <option value="1">GAA</option>
+                      <option value="2">PAL</option>
+                    </select>
+                    <label>User Type Select</label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div id="preferenceselect" class="input-field col s12">
+                    <select>
+                      <option value="1">PAL1</option>
+                      <option value="2">PAL2</option>
+                    </select>
+                    <label>Preference</label>
+                  </div>
+                </div>
+                <input type="submit" class="btn-large" value="SignUp">
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const selectElement = document.getElementById('userselect');
+
+  selectElement.addEventListener('change', (event) => {
+    if(selectElement.value == '1'){
+      document.getElementById('preferenceselect').style.display = 'block'
+    }else{
+      document.getElementById('preferenceselect').style.display = 'none'
+    }
+  });
+</script>
+{% endblock content %}

@@ -5,7 +5,6 @@ from django.contrib.auth.models import User
 # Create your models here.
 class PAL(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    password = models.CharField(max_length=50)
     def __str__(self):
         return self.name
 
@@ -26,7 +25,6 @@ class GAAState(models.Model):
 
 class GAA(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    password = models.CharField(max_length=50)
     state = models.ForeignKey(GAAState, default=0, on_delete=models.CASCADE)
     preference = models.ForeignKey(PAL, on_delete=models.CASCADE, default=None, blank=True, null=True)
     def __str__(self):
