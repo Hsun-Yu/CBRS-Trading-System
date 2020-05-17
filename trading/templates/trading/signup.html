@@ -1,7 +1,6 @@
 {% extends "main/layout.html" %}
 
 {% block content %}
-
 <div class="section container">
   <div class="row">
     <div class="col s12 m6 offset-m3">
@@ -9,29 +8,41 @@
         <div class="card-content">
           <div id="CustomerLoginForm">
             <form method="post" action="/account/login" id="customer_login" accept-charset="UTF-8"><input type="hidden" name="form_type" value="customer_login"><input type="hidden" name="utf8" value="✓">
-                <h4 class="center">Sign Up</h4>
+
+              {% csrf_token %}
+              
+              <h4 class="center">Sign Up</h4>
                 <div class="row">
                   <div class="input-field col s12">
                       <label for="CustomerEmail" class="">
                           Username
                       </label>
-                      <input type="text" name="customer[username]" id="CustomerUsername" class="" spellcheck="false" autocomplete="off" autocapitalize="off" autofocus="">
+                      {{ form.username }}
                   </div>
+                  {% for error in form.username.errors %}
+                    <p style="color: red">{{ error }}</p>
+                  {% endfor %}
                 </div>
                 <div class="row">
                   <div class="input-field col s12">
                       <label for="CustomerPassword">
-                      Password
+                        Password
                       </label>
-                      <input type="password" name="customer[password]" id="CustomerPassword" class="">
+                      {{ form.password1 }}
                   </div>
+                  {% for error in form.password1.errors %}
+                    <p style="color: red">{{ error }}</p>
+                  {% endfor %}
                 </div>
                 <div class="row">
                   <div class="input-field col s12">
                       <label for="CustomerPassword">
-                      Confirm Password
+                        Password Confirmation
                       </label>
-                      <input type="password" name="customer[password]" id="CustomerPassword" class="">
+                      {{ form.password2 }}
+                      {% for error in form.password2.errors %}
+                        <p style="color: red">{{ error }}</p>
+                      {% endfor %}
                   </div>
                 </div>
                 <div class="row">
@@ -45,10 +56,13 @@
                 </div>
                 <div class="row">
                   <div id="preferenceselect" class="input-field col s12">
+                    {% comment %} 
                     <select>
                       <option value="1">PAL1</option>
                       <option value="2">PAL2</option>
                     </select>
+                     {% endcomment %}
+                     {{ form.preferenceSelect }}
                     <label>Preference</label>
                   </div>
                 </div>

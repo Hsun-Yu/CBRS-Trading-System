@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 class PAL(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     def __str__(self):
-        return self.name
+        return self.user.username
 
 class PALInfo(models.Model):
     PAL = models.ForeignKey(PAL, on_delete=models.CASCADE, default=None)
