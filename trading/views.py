@@ -22,12 +22,12 @@ def loginView(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                messages.info(request, f"{username} Login Success~")
+                messages.success(request, f"{username} Login Success~")
                 return redirect('/')
             else:
-                messages.info(request, "Password or Username Wrong!!")
+                messages.warning(request, "Password or Username Wrong!!")
         else:
-            messages.info(request, "Password or Username Wrong!!")
+            messages.warning(request, "Password or Username Wrong!!")
 
     form = AuthenticationForm()
     return render(request = request, template_name = "trading/login.html", context={"form":form})
@@ -48,6 +48,7 @@ def signupView(request):
             else:
                 pal = PAL.objects.create(user=user)
                 PAL.save(pal)
+            messages.success(request, f"{username} Sign Up Success~ You Can Login Now~")
             return redirect('trading/login')
     else:
         form = SignUpForm()
