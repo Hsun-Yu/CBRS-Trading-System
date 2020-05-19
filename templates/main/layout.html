@@ -13,22 +13,64 @@
   <!-- Compiled and minified JavaScript -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link href="{% static "css/materialize.css" %}" type="text/css" rel="stylesheet" media="screen,projection"/>
   <link href="{% static "css/materialize.min.css" %}" type="text/css" rel="stylesheet" media="screen,projection"/>
   <link href="{% static "css/style.css" %}" type="text/css" rel="stylesheet" media="screen,projection"/>
-
-  
   <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 </head>
 <body>
+  <ul id="dropdown1" class="dropdown-content">
+    <li><a href="#!">Profile</a></li>
+    <li class="divider"></li>
+    {% for group in request.user.groups.all %}
+      {% if group.name == 'PAL' %}
+        <li><a href="#!">Price</a></li>
+        <li><a href="#!">Logs</a></li>
+      {% endif %}
+      {% if group.name == 'GAA' %}
+        <li><a href="#!">Orders</a></li>
+      {% endif %}
+    {% endfor %}
+    <li class="divider"></li>
+    <li><a href="/trading/logout">Sign Out</a></li>
+  </ul>
+  <ul id="dropdown2" class="dropdown-content">
+    <li><a href="#!">Profile</a></li>
+    <li class="divider"></li>
+    {% for group in request.user.groups.all %}
+      {% if group.name == 'PAL' %}
+        <li><a href="#!">Price</a></li>
+        <li><a href="#!">Logs</a></li>
+      {% endif %}
+      {% if group.name == 'GAA' %}
+        <li><a href="#!">Orders</a></li>
+      {% endif %}
+    {% endfor %}
+    <li class="divider"></li>
+    <li><a href="/trading/logout">Sign Out</a></li>
+  </ul>
   <nav class="light-blue lighten-1" role="navigation">
     <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">CBRS</a>
       <ul class="right hide-on-med-and-down">
-        <li><a href="/trading/login">Login</a></li>
+        <!-- login  %} -->
+        {% if request.user.is_authenticated %}
+          <li><a class="dropdown-trigger" href="#!" data-target="dropdown2">{{ request.user.username }}<i class="material-icons right">arrow_drop_down</i></a></li>        
+        <!-- else  -->
+        {% else %}
+          <li><a href="/trading/login">Login</a></li>
+        <!--  endif  -->
+        {% endif %}
       </ul>
 
       <ul id="nav-mobile" class="sidenav">
-        <li><a href="#">Login</a></li>
+        <!-- login  %} -->
+        {% if request.user.is_authenticated %}
+          <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">{{ request.user.username }}<i class="material-icons right">arrow_drop_down</i></a></li>
+        <!-- else  -->
+        {% else %}
+          <li><a href="/trading/login">Login</a></li>
+        <!--  endif  -->
+        {% endif %}
+
       </ul>
       <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
     </div>
@@ -85,10 +127,13 @@
 
 
   <!--  Scripts-->
-  <script src="{% static "js/materialize.js" %}"></script>
   <script src="{% static "js/materialize.min.js" %}"></script>
   <script src="{% static  "js/init.js" %}"></script>
   <script>
+    $(document).ready(function(){
+      $(".dropdown-trigger").dropdown();
+    });
+
     document.addEventListener('DOMContentLoaded', function() {
       var elems = document.querySelectorAll('select');
     });
