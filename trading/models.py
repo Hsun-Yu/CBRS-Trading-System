@@ -11,7 +11,7 @@ class PAL(models.Model):
 class PALInfo(models.Model):
     PAL = models.ForeignKey(PAL, on_delete=models.CASCADE, default=None)
     numberOfRemaining = models.IntegerField()
-    price = models.IntegerField()
+    price = models.DecimalField(max_digits=6, decimal_places=2)
     updateDateTime = models.DateTimeField(default=datetime.now)
 
     def __str__(self):
@@ -32,7 +32,7 @@ class GAA(models.Model):
 
 class Order(models.Model):
     GAA = models.ForeignKey(GAA, on_delete=models.CASCADE)
-    price = models.IntegerField()
+    price = models.DecimalField(max_digits=6, decimal_places=2)
     orderDatetime = models.DateTimeField(default=datetime.now)
     isFinish = models.BooleanField(default=False)
     dealWith = models.ForeignKey(PALInfo, on_delete=models.CASCADE, default=None, blank=True, null=True)
