@@ -45,14 +45,25 @@
                   </div>
                 </div>
                 <div class="row">
-                  
                   <div class="input-field col s12">
                     {{ form.userSelect }}
                     <label>User Type Select</label>
                   </div>
                 </div>
-                <div class="row">
-                  <div id="preferenceselect" class="input-field col s12">
+                <div id="palnumberofremaining" class="row" style="display:none">
+                  <div class="input-field col s12">
+                    {{ form.numberOfRemaining }}
+                    <label>Number of remaining</label>
+                  </div>
+                </div>
+                <div id="palprice"  class="row" style="display:none">
+                  <div class="input-field col s12">
+                    {{ form.price }}
+                    <label>Price</label>
+                  </div>
+                </div>
+                <div id="preferenceselect"  class="row">
+                  <div class="input-field col s12">
                     {{ form.preferenceSelect }}
                     <label>Preference</label>
                   </div>
@@ -72,8 +83,12 @@
   selectElement.addEventListener('change', (event) => {
     if(selectElement.value == '1'){
       document.getElementById('preferenceselect').style.display = 'block'
+      document.getElementById('palnumberofremaining').style.display = 'none'
+      document.getElementById('palprice').style.display = 'none'
     }else{
       document.getElementById('preferenceselect').style.display = 'none'
+      document.getElementById('palnumberofremaining').style.display = 'block'
+      document.getElementById('palprice').style.display = 'block'
     }
   });
 </script>

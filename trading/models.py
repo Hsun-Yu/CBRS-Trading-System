@@ -5,17 +5,18 @@ from django.contrib.auth.models import User
 # Create your models here.
 class PAL(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    numberOfRemaining = models.IntegerField()
+    price = models.DecimalField(max_digits=6, decimal_places=2)
     def __str__(self):
         return self.user.username
 
-class PALInfo(models.Model):
+class PALHistory(models.Model):
     PAL = models.ForeignKey(PAL, on_delete=models.CASCADE, default=None)
-    numberOfRemaining = models.IntegerField()
     price = models.DecimalField(max_digits=6, decimal_places=2)
     updateDateTime = models.DateTimeField(default=datetime.now)
 
     def __str__(self):
-        return self.PAL.name
+        return self.PAL.user.username
 
 class GAAState(models.Model):
     name = models.CharField(max_length=50)
@@ -35,8 +36,8 @@ class Order(models.Model):
     price = models.DecimalField(max_digits=6, decimal_places=2)
     orderDatetime = models.DateTimeField(default=datetime.now)
     isFinish = models.BooleanField(default=False)
-    dealWith = models.ForeignKey(PALInfo, on_delete=models.CASCADE, default=None, blank=True, null=True)
-    dealDateTimw = models.DateTimeField(default=None, blank=True)
+    dealWith = models.ForeignKey(PAL, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    dealDateTime = models.DateTimeField(default=None, blank=True)
 
     def __str__(self):
         return self.GAA.name

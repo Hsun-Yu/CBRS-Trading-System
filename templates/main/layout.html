@@ -23,7 +23,7 @@
     <li class="divider"></li>
     {% for group in request.user.groups.all %}
       {% if group.name == 'PAL' %}
-        <li><a href="#!">Price</a></li>
+        <li><a href="trading/setprice">Price</a></li>
         <li><a href="#!">Logs</a></li>
       {% endif %}
       {% if group.name == 'GAA' %}
@@ -38,7 +38,7 @@
     <li class="divider"></li>
     {% for group in request.user.groups.all %}
       {% if group.name == 'PAL' %}
-        <li><a href="#!">Price</a></li>
+        <li><a href="trading/setprice">Price</a></li>
         <li><a href="#!">Logs</a></li>
       {% endif %}
       {% if group.name == 'GAA' %}
@@ -144,6 +144,6 @@
         $('select').formSelect();
       });
     </script>
-    <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
+    
   </body>
 </html>
