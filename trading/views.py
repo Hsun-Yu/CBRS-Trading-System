@@ -42,6 +42,8 @@ def signupView(request):
             raw_password = form.cleaned_data.get('password1')
             userType = form.cleaned_data.get('userSelect')
             preference = form.cleaned_data.get('preferenceSelect')
+            numberOfRemaining = form.cleaned_data.get('numberOfRemaining')
+            price = form.cleaned_data.get('price')
             # Sign up GAA
             if userType == '1':
                 group = Group.objects.get(name='GAA')
@@ -52,7 +54,9 @@ def signupView(request):
             else:
                 group = Group.objects.get(name='PAL')
                 user.groups.add(group)
-                pal = PAL.objects.create(user=user)
+                pal = PAL.objects.create(user=user, 
+                                        numberOfRemaining=numberOfRemaining,
+                                        price=price)
                 PAL.save(pal)
             messages.success(request, f"{username} Sign Up Success~ You Can Login Now~")
             return redirect('trading/login')
