@@ -1,19 +1,85 @@
 {% extends "main/layout.html" %}
 {% block content %}
     {% load static %}
-    <div id="container" style="width: 75%;">
-        <canvas id="myChart" width="400" height="400"></canvas>
-        {{data}}
+
+    <div class="container">
+        <div class="fixed-action-btn">
+            <a title="Edit Your Price" class="btn-floating btn-large teal lighten-2 modal-trigger" href="#modal1"><i class="material-icons">edit</i></a>    
+        </div>
+          <!-- Modal Structure -->
+
+        <div id="modal1" class="modal modal-fixed-footer">
+            <form method="post">
+                {% csrf_token %}
+                <div class="modal-content">
+                    <h4>Edit My Detail</h4>
+
+                    <div class="row">
+                        <div class="input-field">
+                            <label for="Remaining">
+                            Number Of Remaining
+                            </label>
+                            {{ form.numberOfRemaining }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field">
+                            <label for="Price">
+                                Price
+                            </label>
+                            {{ form.price }}
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="modal-close btn-flat">Edit</button>
+                </div>
+            </form>
+        </div>
+        <ul class="collection">
+            <li class="collection-item">
+                <h3 style="text-align: center;">Detail</h3>
+                <div class="row center">
+                    <div class="col s6">
+                        <i style="color: cornflowerblue;" class="large material-icons">data_usage</i>
+                        <h4>Remaining</h3>
+                        <h5>{{ pal.numberOfRemaining }}</h4>
+                    </div>
+                    <div class="col s6">
+                        <i style="color: goldenrod;" class="large material-icons">monetization_on</i>
+                        <h4>Price</h3>
+                        <h5>${{ pal.price }}</h4>
+                    </div>
+                </div>
+            </li>
+            <li class="collection-item">
+                <h3 style="text-align: center;">History</h3>
+                <canvas id="myChart" width="400"></canvas>
+            </li>
+        </ul>
+        
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var elems = document.querySelectorAll('.modal');
+            var instances = M.Modal.init(elems, options);
+          });
+        
+          // Or with jQuery
+        
+          $(document).ready(function(){
+            $('.modal').modal();
+          });
+    </script>
     <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
     <script>
         var ctx = document.getElementById('myChart');
         var myChart = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: {{ label|safe }},
+                labels: {{ labels|safe }},
                 datasets: [{
-                    label: '# of Votes',
+                    label: '{{ label|safe }}',
                     data: {{ data|safe }},
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',

@@ -16,7 +16,7 @@ class PALHistory(models.Model):
     updateDateTime = models.DateTimeField(default=datetime.now)
 
     def __str__(self):
-        return self.PAL.user.username
+        return self.PAL.user.username + ":" + str(self.price)
 
 class GAAState(models.Model):
     name = models.CharField(max_length=50)

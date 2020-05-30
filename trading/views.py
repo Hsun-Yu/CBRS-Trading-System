@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from django.http import HttpResponse
-from .forms import SignUpForm
+from django.http import HttpResponse, HttpResponseRedirect
+from .forms import SignUpForm, EditPALForm
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
@@ -58,7 +58,9 @@ def signupView(request):
                                         numberOfRemaining=numberOfRemaining,
                                         price=price)
                 PAL.save(pal)
-            messages.success(request, f"{username} Sign Up Success~ You Can Login Now~")
+                plahistory = PALHistory.objects.create(PAL=pal, 
+                                                        price=price)
+            messages.success(request, f"{username} Signed up successfully~ You Can Login Now~")
             return redirect('trading/login')
     else:
         form = SignUpForm()
@@ -70,10 +72,32 @@ def logoutView(request):
     return redirect('/')
 
 def setPriceView(request):
-    price = PALHistory.objects.all()
-    data = []
-    label = []
-    for i in price:
-        data.append((int)(i.price))
-        label.append(i.PAL.user.username)
-    return render(request, 'trading/setprice.html', {'data':data, 'label':label})
+    if request.method == 'POST':
+        form = EditPALForm(request.POST)
+        if form.is_valid():
+            pal = PAL.objects.get(user=request.user)
+            originalPrice = pal.price
+            pal.price = form.cleaned_data.get('price')
+            pal.numberOfRemaining = form.cleaned_data.get('numberOfRemaining')
+            pal.save()
+            history = PALHistory.objects.create(PAL=pal, price=pal.price)
+            PALHistory.save(history)
+            messages.success(request, f"Edited successfully~")
+            return HttpResponseRedirect('/trading/setprice')
+
+
+    if request.user.is_authenticated:
+        user = request.user
+        if PAL.objects.filter(user=user).exists():
+            pal = PAL.objects.get(user=user)
+            price = PALHistory.objects.filter(PAL=pal)
+            data = []
+            labels = []
+            label = str(request.user.username)
+            for i in price:
+                data.append((int)(i.price))
+                labels.append(i.updateDateTime.strftime('%Y-%m-%d %H:%M'))
+
+            form = EditPALForm(instance=pal)
+            return render(request, 'trading/setprice.html', {'data':data, 'labels':labels, 'label':label, 'pal':pal, 'form':form})
+    return redirect('/')
