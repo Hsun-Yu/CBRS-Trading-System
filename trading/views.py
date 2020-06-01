@@ -9,10 +9,26 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import login as auth_login
 from django.views.generic import TemplateView
+from .chartcolour import COLORS
 
 # Create your views here.
 def index(request):
-    return render(request, 'trading/index.html')
+    pals = PAL.objects.all()
+    datasets = []
+    index = 0
+    for i in pals:
+        d = []
+        orders = Order.objects.filter(PAL=i, isFinish=True)
+        colour = COLORS[index % len(COLORS)]
+        index = index + 1
+        for j in orders:
+            j.dealDateTime
+            d.append({'x': j.dealDateTime.strftime('%Y-%m-%d %H:%M'), 'y': (int)(j.price)})
+        datasets.append({'label': i.user.username, 
+                        'data':d,
+                        'backgroundColor': 'rgba({}, {}, {}, 0.2)'.format(colour[0], colour[1], colour[2]),
+                        'borderColor': 'rgba({}, {}, {}, 1)'.format(colour[0], colour[1], colour[2])})
+    return render(request, 'trading/index.html', {'datasets': datasets})
 
 def loginView(request):
     if request.method == 'POST':
@@ -78,9 +94,11 @@ def priceView(request):
             pal = PAL.objects.get(user=request.user)
             pal.price = form.cleaned_data.get('price')
             pal.numberOfRemaining = form.cleaned_data.get('numberOfRemaining')
+            # Also save to PALHistory
             pal.save()
-            history = PALHistory.objects.create(PAL=pal, price=pal.price)
-            PALHistory.save(history)
+            # history = PALHistory.objects.create(PAL=pal, price=pal.price)
+            # PALHistory.save(history)
+
             messages.success(request, f"Edited successfully~")
             return HttpResponseRedirect('/trading/price')
 
