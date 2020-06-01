@@ -1,0 +1,114 @@
+{% extends "main/layout.html" %}
+{% block content %}
+    {% load static %}
+
+    <div class="container">
+        <div class="fixed-action-btn">
+            <a title="Buy" class="btn-floating btn-large teal lighten-2 modal-trigger" href="#modal1"><i class="material-icons">edit</i></a>    
+        </div>
+          <!-- Modal Structure -->
+
+        <div id="modal1" class="modal">
+            <form method="post">
+                {% csrf_token %}
+                <div class="modal-content">
+                    <h4>Order</h4>
+                    {% if gaa.preference != None %}
+                        <div class="row">
+                            <div class="input-field">
+                            <input disabled value="{{ gaa.preference.user.username }}" id="disabled" type="text" class="validate">
+                            <label for="disabled">Preference</label>
+                            </div>
+                        </div>
+                        <div style="display: none;" class="row">
+                            <div class="input-field">
+                                {{ form.PAL }}
+                                <label>Preference</label>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="row">
+                            <div class="input-field">
+                                {{ form.PAL }}
+                                <label>Preference</label>
+                            </div>
+                        </div>
+                    {% endif %}
+                    
+                    
+                    <div class="row">
+                        <div class="input-field">
+                            <label for="Price">
+                                Price
+                            </label>
+                            {{ form.price }}
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="modal-close btn-flat">Buy</button>
+                </div>
+            </form>
+        </div>
+        <ul class="collection">
+            <li class="collection-item">
+                <h3 style="text-align: center;">PALs</h3>
+                <canvas id="myChart" width="400"></canvas>
+            </li>
+        </ul>
+        
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var elems = document.querySelectorAll('.modal');
+            var instances = M.Modal.init(elems, options);
+          });
+        
+          // Or with jQuery
+        
+          $(document).ready(function(){
+            $('.modal').modal();
+          });
+    </script>
+    <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
+    <script>
+        var ctx = document.getElementById('myChart');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: {{ labels|safe }},
+                datasets: [{
+                    label: 'PALs',
+                    data: {{ data|safe }},
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
+
+{% endblock %}

@@ -23,11 +23,12 @@
     <li class="divider"></li>
     {% for group in request.user.groups.all %}
       {% if group.name == 'PAL' %}
-        <li><a href="trading/price">Price</a></li>
+        <li><a href="/trading/price">Pricing & Detail</a></li>
         <li><a href="#!">Logs</a></li>
       {% endif %}
       {% if group.name == 'GAA' %}
-        <li><a href="#!">Orders</a></li>
+        <li><a href="/trading/order">Orders & Detail</a></li>
+        <li><a href="/trading/market">Market</a></li>
       {% endif %}
     {% endfor %}
     <li class="divider"></li>
@@ -38,12 +39,12 @@
     <li class="divider"></li>
     {% for group in request.user.groups.all %}
       {% if group.name == 'PAL' %}
-        <li><a href="trading/price">Pricing & Detail</a></li>
+        <li><a href="/trading/price">Pricing & Detail</a></li>
         <li><a href="#!">Logs</a></li>
       {% endif %}
       {% if group.name == 'GAA' %}
-        <li><a href="trading/order">Orders & Detail</a></li>
-        <li><a href="trading/order">Market</a></li>
+        <li><a href="/trading/order">Orders & Detail</a></li>
+        <li><a href="/trading/market">Market</a></li>
       {% endif %}
     {% endfor %}
     <li class="divider"></li>

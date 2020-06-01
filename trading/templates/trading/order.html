@@ -72,24 +72,21 @@
                             </thead>
 
                             <tbody>
-                                <tr>
-                                    <td>Alvin</td>
-                                    <td>Eclair</td>
-                                    <td>$0.87</td>
-                                    <td>$0.87</td>
-                                </tr>
-                                <tr>
-                                    <td>Alan</td>
-                                    <td>Jellybean</td>
-                                    <td>$3.76</td>
-                                    <td>$0.87</td>
-                                </tr>
-                                <tr>
-                                    <td>Jonathan</td>
-                                    <td>Lollipop</td>
-                                    <td>$7.00</td>
-                                    <td>$0.87</td>
-                                </tr>
+                                {% for order in orders %}
+                                    <tr>
+                                        <td>{{order.PAL.user.username}}</td>
+                                        <td>${{order.price}}</td>
+                                        <td>{{order.orderDatetime}}</td>
+                                        <td>
+                                        {% if order.isFinish %}
+                                            <i style="color: #00bfa5;" class="material-icons">check</i>
+                                        {% else %}
+                                            <i style="color: #e57373;" class="material-icons">close</i>
+                                        {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                
                             </tbody>
                         </table>
                     {% endif %}

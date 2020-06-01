@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
-from .forms import SignUpForm, EditPALForm, EditGAAForm
+from .forms import SignUpForm, EditPALForm, EditGAAForm, OrderForm
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
@@ -120,5 +120,38 @@ def orderView(request):
             orders = []
             orders = Order.objects.filter(GAA=gaa)
             form = EditGAAForm(instance=gaa)
-            return render(request, 'trading/order.html', {'gaa':gaa, 'form':form, 'orders':orders})
+            numberOfDatas = 100
+            return render(request, 'trading/order.html', {'gaa':gaa, 'form':form, 'orders':orders[0:numberOfDatas]})
+    return redirect('/')
+
+def marketView(request):
+    if request.method == 'POST':
+        form = OrderForm(request.POST)
+        if form.is_valid():
+            gaa = GAA.objects.get(user=request.user)
+            price = form.cleaned_data.get('price')
+            pal = gaa.preference
+            if gaa.preference == None:
+                pal = form.cleaned_data.get('PAL')
+    
+            order = Order.objects.create(GAA=gaa, PAL=pal, price=price)
+            Order.save(order)
+            messages.success(request, f"Ordered successfully~")
+            return HttpResponseRedirect('/trading/order')
+
+
+    if request.user.is_authenticated:
+        user = request.user
+        if GAA.objects.filter(user=user).exists():
+            gaa = GAA.objects.get(user=user)
+            pals = PAL.objects.all()
+            data = []
+            labels = []
+            for i in pals:
+                data.append((int)(i.price))
+                labels.append((str)(i.user.username))
+
+            form = OrderForm()
+            numberOfDatas = 100
+            return render(request, 'trading/market.html', {'data':data[:numberOfDatas], 'labels':labels[:numberOfDatas], 'gaa':gaa, 'form':form})
     return redirect('/')

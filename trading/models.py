@@ -34,10 +34,10 @@ class GAA(models.Model):
 class Order(models.Model):
     GAA = models.ForeignKey(GAA, on_delete=models.CASCADE)
     PAL = models.ForeignKey(PAL, on_delete=models.CASCADE, default=None, blank=True, null=True)
-    price = models.DecimalField(max_digits=6, decimal_places=2)
+    price = models.DecimalField(max_digits=6, decimal_places=2, default=500)
     orderDatetime = models.DateTimeField(default=datetime.now)
     isFinish = models.BooleanField(default=False)
-    dealDateTime = models.DateTimeField(default=None, blank=True)
+    dealDateTime = models.DateTimeField(default=None, null=True)
 
     def __str__(self):
         return self.GAA.user.username

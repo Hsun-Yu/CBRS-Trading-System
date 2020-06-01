@@ -9,4 +9,5 @@ urlpatterns = [
     url(r'/logout', views.logoutView, name='logoutView'),
     url(r'/price', views.priceView, name='priceView'),
     url(r'/order', views.orderView, name='orderView'),
+    url(r'/market', views.marketView, name='marketView'),
 ];

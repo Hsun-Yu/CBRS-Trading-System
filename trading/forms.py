@@ -2,7 +2,7 @@ from django import forms
 from django.forms import ModelForm
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from .models import PAL, GAA
+from .models import PAL, GAA, Order
 
 class SignUpForm(UserCreationForm):
     userSelect = forms.ChoiceField(choices=[(1, "GAA"), (2, "PAL")])
@@ -25,3 +25,9 @@ class EditGAAForm(ModelForm):
         exclude = ()
         fields = ('preference',)
         
+class OrderForm(ModelForm):
+    PAL = forms.ModelChoiceField(initial=0, queryset=PAL.objects.all())
+    class Meta:
+        model = Order
+        exclude = ()
+        fields = ('PAL', 'price')
