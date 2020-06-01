@@ -8,11 +8,11 @@
         </div>
           <!-- Modal Structure -->
 
-        <div id="modal1" class="modal modal-fixed-footer">
+        <div id="modal1" class="modal">
             <form method="post">
                 {% csrf_token %}
                 <div class="modal-content">
-                    <h4>Edit My Detail</h4>
+                    <h4>Edit Detail</h4>
 
                     <div class="row">
                         <div class="input-field">
@@ -43,12 +43,12 @@
                     <div class="col s6">
                         <i style="color: cornflowerblue;" class="large material-icons">data_usage</i>
                         <h4>Remaining</h3>
-                        <h5>{{ pal.numberOfRemaining }}</h4>
+                        <h5>{{ pal.numberOfRemaining }}</h5>
                     </div>
                     <div class="col s6">
                         <i style="color: goldenrod;" class="large material-icons">monetization_on</i>
                         <h4>Price</h3>
-                        <h5>${{ pal.price }}</h4>
+                        <h5>${{ pal.price }}</h5>
                     </div>
                 </div>
             </li>

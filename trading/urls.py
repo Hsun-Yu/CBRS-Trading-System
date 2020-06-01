@@ -7,5 +7,6 @@ urlpatterns = [
     url(r'/login', views.loginView, name='loginView'),
     url(r'/signup', views.signupView, name='signupView'),
     url(r'/logout', views.logoutView, name='logoutView'),
-    url(r'/setprice', views.setPriceView, name='setPriceView'),
+    url(r'/price', views.priceView, name='priceView'),
+    url(r'/order', views.orderView, name='orderView'),
 ];

@@ -2,7 +2,7 @@ from django import forms
 from django.forms import ModelForm
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from .models import PAL
+from .models import PAL, GAA
 
 class SignUpForm(UserCreationForm):
     userSelect = forms.ChoiceField(choices=[(1, "GAA"), (2, "PAL")])
@@ -16,4 +16,12 @@ class SignUpForm(UserCreationForm):
 class EditPALForm(ModelForm):
     class Meta:
         model = PAL
+        exclude = ()
         fields = ('numberOfRemaining', 'price')
+
+class EditGAAForm(ModelForm):
+    class Meta:
+        model = GAA
+        exclude = ()
+        fields = ('preference',)
+        

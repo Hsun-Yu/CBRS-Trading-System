@@ -1,0 +1,117 @@
+{% extends "main/layout.html" %}
+{% block content %}
+    {% load static %}
+
+    <div class="container">
+        <div class="fixed-action-btn">
+            <a title="Edit Detail" class="btn-floating btn-large teal lighten-2 modal-trigger" href="#modal1"><i class="material-icons">edit</i></a>    
+        </div>
+          <!-- Modal Structure -->
+
+        <div id="modal1" class="modal">
+            <form method="post">
+                {% csrf_token %}
+                <div class="modal-content">
+                    <h4>Edit Detail</h4>
+                    <div id="preferenceselect"  class="row">
+                        <div class="input-field col s12">
+                            {{ form.preference }}
+                            <label>Preference</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="modal-close btn-flat">Edit</button>
+                </div>
+            </form>
+        </div>
+        <ul class="collection">
+            <li class="collection-item">
+                <h3 style="text-align: center;">Detail</h3>
+                <div class="row center">
+                    <div class="col s4">
+                        <i style="color: cornflowerblue;" class="large material-icons">assessment</i>
+                        <h4>Preference</h3>
+                        <h5>{{ gaa.preference }}</h5>
+                    </div>
+                    <div class="col s4">
+                    {% if gaa.status.name == "Idle" %}
+                        <i style="color: #ff8a65;" class="large material-icons">access_time</i>
+                    {% elif gaa.status.name == "Granted" %}
+                        <i style="color: #00bfa5;" class="large material-icons">check</i>
+                    {% elif gaa.status.name == "Authorized" %}
+                        <i style="color: #00bfa5;" class="large material-icons">done_all</i>
+                    {% endif %}
+                        <h4>Status</h3>
+                        <h5>{{ gaa.status }}</h5>
+                    </div>
+                    <div class="col s4">
+                        <i style="color: goldenrod;" class="large material-icons">monetization_on</i>
+                        <h4>Closing Price</h3>
+                        {% if orders.count == 0 %}
+                            <h5>None</h5>
+                        {% else %}
+                            <h5>${{ orders.0.price }}</h5>
+                        {% endif %}
+                    </div>
+                </div>
+            </li>
+            <li class="collection-item">
+                <h3 style="text-align: center;">My Orders</h3>
+                    {% if orders.count == 0 %}
+                        <h4 style="text-align: center;">Sorry, you have no orders.</h4>
+                    {% else %}
+                        <table class="highlight centered">
+                            <thead>
+                                <tr>
+                                    <th>PAL</th>
+                                    <th>Price</th>
+                                    <th>Order Time</th>
+                                    <th>Deal?</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr>
+                                    <td>Alvin</td>
+                                    <td>Eclair</td>
+                                    <td>$0.87</td>
+                                    <td>$0.87</td>
+                                </tr>
+                                <tr>
+                                    <td>Alan</td>
+                                    <td>Jellybean</td>
+                                    <td>$3.76</td>
+                                    <td>$0.87</td>
+                                </tr>
+                                <tr>
+                                    <td>Jonathan</td>
+                                    <td>Lollipop</td>
+                                    <td>$7.00</td>
+                                    <td>$0.87</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    {% endif %}
+                
+                    
+                    
+                
+            </li>
+        </ul>
+        
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var elems = document.querySelectorAll('.modal');
+            var instances = M.Modal.init(elems, options);
+          });
+        
+          // Or with jQuery
+        
+          $(document).ready(function(){
+            $('.modal').modal();
+          });
+    </script>
+   
+{% endblock %}

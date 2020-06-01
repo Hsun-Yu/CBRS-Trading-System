@@ -26,18 +26,18 @@ class GAAState(models.Model):
 
 class GAA(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    state = models.ForeignKey(GAAState, default=1, on_delete=models.CASCADE)
+    status = models.ForeignKey(GAAState, default=1, on_delete=models.CASCADE)
     preference = models.ForeignKey(PAL, on_delete=models.CASCADE, default=None, blank=True, null=True)
     def __str__(self):
         return self.user.username
 
 class Order(models.Model):
     GAA = models.ForeignKey(GAA, on_delete=models.CASCADE)
+    PAL = models.ForeignKey(PAL, on_delete=models.CASCADE, default=None, blank=True, null=True)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     orderDatetime = models.DateTimeField(default=datetime.now)
     isFinish = models.BooleanField(default=False)
-    dealWith = models.ForeignKey(PAL, on_delete=models.CASCADE, default=None, blank=True, null=True)
     dealDateTime = models.DateTimeField(default=None, blank=True)
 
     def __str__(self):
-        return self.GAA.name
+        return self.GAA.user.username

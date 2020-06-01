@@ -1,10 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
-from .forms import SignUpForm, EditPALForm
+from .forms import SignUpForm, EditPALForm, EditGAAForm
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
-from .models import PAL, GAA, PALHistory
+from .models import PAL, GAA, PALHistory, Order
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import login as auth_login
@@ -71,19 +71,18 @@ def logoutView(request):
     messages.info(request, "Logged out successfully!")
     return redirect('/')
 
-def setPriceView(request):
+def priceView(request):
     if request.method == 'POST':
         form = EditPALForm(request.POST)
         if form.is_valid():
             pal = PAL.objects.get(user=request.user)
-            originalPrice = pal.price
             pal.price = form.cleaned_data.get('price')
             pal.numberOfRemaining = form.cleaned_data.get('numberOfRemaining')
             pal.save()
             history = PALHistory.objects.create(PAL=pal, price=pal.price)
             PALHistory.save(history)
             messages.success(request, f"Edited successfully~")
-            return HttpResponseRedirect('/trading/setprice')
+            return HttpResponseRedirect('/trading/price')
 
 
     if request.user.is_authenticated:
@@ -99,5 +98,27 @@ def setPriceView(request):
                 labels.append(i.updateDateTime.strftime('%Y-%m-%d %H:%M'))
 
             form = EditPALForm(instance=pal)
-            return render(request, 'trading/setprice.html', {'data':data, 'labels':labels, 'label':label, 'pal':pal, 'form':form})
+            numberOfDatas = 100
+            return render(request, 'trading/price.html', {'data':data[:numberOfDatas], 'labels':labels[:numberOfDatas], 'label':label, 'pal':pal, 'form':form})
+    return redirect('/')
+
+def orderView(request):
+    if request.method == 'POST':
+        form = EditGAAForm(request.POST)
+        if form.is_valid():
+            gaa = GAA.objects.get(user=request.user)
+            gaa.preference = form.cleaned_data.get('preference')
+            gaa.save()
+            messages.success(request, f"Edited successfully~")
+            return HttpResponseRedirect('/trading/order')
+
+
+    if request.user.is_authenticated:
+        user = request.user
+        if GAA.objects.filter(user=user).exists():
+            gaa = GAA.objects.get(user=user)
+            orders = []
+            orders = Order.objects.filter(GAA=gaa)
+            form = EditGAAForm(instance=gaa)
+            return render(request, 'trading/order.html', {'gaa':gaa, 'form':form, 'orders':orders})
     return redirect('/')
