@@ -11,10 +11,10 @@ class PAL(models.Model):
     def __str__(self):
         return self.user.username
 
-    def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
-        history = PALHistory.objects.create(PAL=self, price=self.price)
-        PALHistory.save(history)
-        return super().save(force_insert=force_insert, force_update=force_update, using=using, update_fields=update_fields)
+    # def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
+    #     history = PALHistory.objects.create(PAL=self, price=self.price)
+    #     PALHistory.save(history)
+    #     return super().save(force_insert=force_insert, force_update=force_update, using=using, update_fields=update_fields)
 
 
 class PALHistory(models.Model):

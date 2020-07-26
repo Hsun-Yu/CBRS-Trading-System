@@ -4,12 +4,15 @@ from .forms import SignUpForm, EditPALForm, EditGAAForm, OrderForm
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
-from .models import PAL, GAA, PALHistory, Order
+from .models import PAL, GAA, PALHistory, Order, GAAState
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import login as auth_login
 from django.views.generic import TemplateView
 from .chartcolour import COLORS
+from rest_framework import viewsets
+from .serializers import PALHistorySerializer, PALSerializer, UserSerializer, GroupSerializer, GAASerializer, OrderSerializer, GAAStateSerializer
+
 
 # Create your views here.
 def index(request):
@@ -74,8 +77,8 @@ def signupView(request):
                                         numberOfRemaining=numberOfRemaining,
                                         price=price)
                 PAL.save(pal)
-                plahistory = PALHistory.objects.create(PAL=pal, 
-                                                        price=price)
+                history = PALHistory.objects.create(PAL=pal, price=price)
+                PALHistory.save(history)
             messages.success(request, f"{username} Signed up successfully~ You Can Login Now~")
             return redirect('trading/login')
     else:
@@ -96,8 +99,8 @@ def priceView(request):
             pal.numberOfRemaining = form.cleaned_data.get('numberOfRemaining')
             # Also save to PALHistory
             pal.save()
-            # history = PALHistory.objects.create(PAL=pal, price=pal.price)
-            # PALHistory.save(history)
+            history = PALHistory.objects.create(PAL=pal, price=pal.price)
+            PALHistory.save(history)
 
             messages.success(request, f"Edited successfully~")
             return HttpResponseRedirect('/trading/price')
@@ -173,3 +176,33 @@ def marketView(request):
             numberOfDatas = 100
             return render(request, 'trading/market.html', {'data':data[:numberOfDatas], 'labels':labels[:numberOfDatas], 'gaa':gaa, 'form':form})
     return redirect('/')
+
+
+# View Sets
+class PALHistoryViewSet(viewsets.ModelViewSet):
+    queryset = PALHistory.objects.all()
+    serializer_class = PALHistorySerializer
+
+class PALViewSet(viewsets.ModelViewSet):
+    queryset = PAL.objects.all()
+    serializer_class = PALSerializer
+
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+class GroupViewSet(viewsets.ModelViewSet):
+    queryset = Group.objects.all()
+    serializer_class = GroupSerializer
+
+class GAAStateViewSet(viewsets.ModelViewSet):
+    queryset = GAAState.objects.all()
+    serializer_class = GAAStateSerializer
+
+class GAAViewSet(viewsets.ModelViewSet):
+    queryset = GAA.objects.all()
+    serializer_class = GAASerializer
+
+class OrderViewSet(viewsets.ModelViewSet):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
