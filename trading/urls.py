@@ -22,4 +22,7 @@ urlpatterns = [
     url(r'price', views.priceView, name='priceView'),
     url(r'order', views.orderView, name='orderView'),
     url(r'market', views.marketView, name='marketView'),
+    url(r'^api/pal/', views.PALList.as_view()),
+    url(r'^api/gaa/', views.GAAList.as_view()),
+    url(r'^api/orders/', views.OrderList.as_view()),
 ];

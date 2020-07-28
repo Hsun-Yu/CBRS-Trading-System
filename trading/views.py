@@ -10,7 +10,8 @@ from django.contrib import messages
 from django.contrib.auth import login as auth_login
 from django.views.generic import TemplateView
 from .chartcolour import COLORS
-from rest_framework import viewsets
+from rest_framework import viewsets, generics
+from django_filters.rest_framework import DjangoFilterBackend
 from .serializers import PALHistorySerializer, PALSerializer, UserSerializer, GroupSerializer, GAASerializer, OrderSerializer, GAAStateSerializer
 
 
@@ -206,3 +207,62 @@ class GAAViewSet(viewsets.ModelViewSet):
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
+
+# List Views
+class PALList(generics.ListAPIView):
+    serializer_class = PALSerializer
+
+    def get_queryset(self):
+        queryset = PAL.objects.all()
+        username = self.request.query_params.get('username', None)
+        price = self.request.query_params.get('price', None)
+        remaining = self.request.query_params.get('remaining', None)
+        if username is not None:
+            queryset = queryset.filter(user__username=username)
+        if price is not None:
+            queryset = queryset.filter(price=price)
+        if remaining is not None:
+            queryset = queryset.filter(numberOfRemaining=remaining)
+        return queryset
+
+class GAAList(generics.ListAPIView):
+    serializer_class = GAASerializer
+
+    def get_queryset(self):
+        queryset = GAA.objects.all()
+        username = self.request.query_params.get('username', None)
+        status = self.request.query_params.get('status', None)
+        preference = self.request.query_params.get('preference', None)
+        if username is not None:
+            queryset = queryset.filter(user__username=username)
+        if status is not None:
+            queryset = queryset.filter(status__name=status)
+        if preference is not None:
+            if preference == 'NULL':
+                queryset = queryset.filter(preference__isnull=True)
+            else:
+                queryset = queryset.filter(preference__user__username=preference)
+        return queryset
+
+class OrderList(generics.ListAPIView):
+    serializer_class = OrderSerializer
+
+    def get_queryset(self):
+        queryset = Order.objects.all()
+        gaa = self.request.query_params.get('gaa', None)
+        pal = self.request.query_params.get('pal', None)
+        price = self.request.query_params.get('price', None)
+        startOrderDatetime = self.request.query_params.get('startorderdatetime', None)
+        endOrderDatetime = self.request.query_params.get('endorderdatetime', None)
+        isFinish = self.request.query_params.get('isFinish', None)
+        dealDateTime = self.request.query_params.get('dealDateTime', None)
+        
+        if gaa is not None:
+            queryset = queryset.filter(GAA__user__username=gaa)
+        if pal is not None:
+            queryset = queryset.filter(PAL__user__username=pal)
+        if price is not None:
+            queryset = queryset.filter(price=price)
+        if isFinish is not None:
+            queryset = queryset.filter(isFinish=isFinish)
+        return queryset

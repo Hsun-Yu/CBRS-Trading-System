@@ -5,7 +5,16 @@ from rest_framework import serializers
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
-        fields = ('url', 'username', 'email', 'groups')
+        fields = ('url', 'username', 'password',  'groups')
+
+    def create(self, validated_data):
+        groups_data = validated_data.pop('groups')
+        user = User.objects.create(**validated_data)
+        user.set_password(validated_data['password'])
+        for group_data in groups_data:
+            user.groups.add(group_data)
+        User.save(user)
+        return user
 
 class GroupSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
