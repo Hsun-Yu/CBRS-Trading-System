@@ -265,4 +265,9 @@ class OrderList(generics.ListAPIView):
             queryset = queryset.filter(price=price)
         if isFinish is not None:
             queryset = queryset.filter(isFinish=isFinish)
+        if dealDateTime is not None:
+            if dealDateTime == 'NULL':
+                queryset = queryset.filter(dealDateTime__isnull=True)
+            else:
+                queryset = queryset.filter(dealDateTime=dealDateTime)
         return queryset

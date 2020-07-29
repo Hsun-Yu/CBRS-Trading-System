@@ -13,6 +13,9 @@ router.register(r'gaa', views.GAAViewSet)
 router.register(r'order', views.OrderViewSet)
 
 urlpatterns = [
+    url(r'api/pal/', views.PALList.as_view()),
+    url(r'api/gaa/', views.GAAList.as_view()),
+    url(r'api/ods/', views.OrderList.as_view()),
     path('api', include(router.urls)),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^$', views.index, name='index'),
@@ -22,7 +25,4 @@ urlpatterns = [
     url(r'price', views.priceView, name='priceView'),
     url(r'order', views.orderView, name='orderView'),
     url(r'market', views.marketView, name='marketView'),
-    url(r'^api/pal/', views.PALList.as_view()),
-    url(r'^api/gaa/', views.GAAList.as_view()),
-    url(r'^api/orders/', views.OrderList.as_view()),
 ];
