@@ -217,12 +217,15 @@ class PALList(generics.ListAPIView):
         username = self.request.query_params.get('username', None)
         price = self.request.query_params.get('price', None)
         remaining = self.request.query_params.get('remaining', None)
+        ordering = self.request.query_params.get('ordering', None)
         if username is not None:
             queryset = queryset.filter(user__username=username)
         if price is not None:
             queryset = queryset.filter(price=price)
         if remaining is not None:
             queryset = queryset.filter(numberOfRemaining=remaining)
+        if ordering is not None:
+            queryset = queryset.order_by(ordering)
         return queryset
 
 class GAAList(generics.ListAPIView):
@@ -256,6 +259,7 @@ class OrderList(generics.ListAPIView):
         endOrderDatetime = self.request.query_params.get('endorderdatetime', None)
         isFinish = self.request.query_params.get('isFinish', None)
         dealDateTime = self.request.query_params.get('dealDateTime', None)
+        ordering = self.request.query_params.get('ordering', None)
         
         if gaa is not None:
             queryset = queryset.filter(GAA__user__username=gaa)
@@ -270,4 +274,6 @@ class OrderList(generics.ListAPIView):
                 queryset = queryset.filter(dealDateTime__isnull=True)
             else:
                 queryset = queryset.filter(dealDateTime=dealDateTime)
+        if ordering is not None:
+            queryset = queryset.order_by(ordering)
         return queryset
