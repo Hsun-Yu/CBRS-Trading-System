@@ -175,6 +175,20 @@ cpr::Response CBRS::update_order(string order_url, json order)
 	return resp;
 }
 
+cpr::Response CBRS::update_pal(string pal_url, json pal)
+{
+	json obj = CBRS::all_object_to_url(pal);
+	cpr::Response resp = cpr::Patch(cpr::Url{ pal_url },
+		cpr::Body{ obj.dump() },
+		cpr::Header{ {"Content-Type", "application/json"} });
+	json history = {
+		{"PAL", pal_url},
+		{"price", pal["price"]}
+	};
+	cpr::Response re = create_pal_history(history);
+	return resp;
+}
+
 cpr::Response CBRS::deal_order(string order_url)
 {
 	json order = {
@@ -204,7 +218,7 @@ json CBRS::find_gaa(json condition)
 	string condi_str = CBRS::condition_json_to_string(condition);
 	string url = CBRS::SERVER_URL + "api/gaa/" + condi_str + "format=json";
 	cpr::Response r = cpr::Get(cpr::Url{ url });
-	return json::parse(r.text)["results"];
+	return json::parse(r.text);
 }
 
 json CBRS::find_pal(json condition)
@@ -212,7 +226,7 @@ json CBRS::find_pal(json condition)
 	string condi_str = CBRS::condition_json_to_string(condition);
 	string url = CBRS::SERVER_URL + "api/pal/" + condi_str + "format=json";
 	cpr::Response r = cpr::Get(cpr::Url{ url });
-	return json::parse(r.text)["results"];
+	return json::parse(r.text);
 }
 
 json CBRS::find_order(json condition)
@@ -220,5 +234,5 @@ json CBRS::find_order(json condition)
 	string condi_str = CBRS::condition_json_to_string(condition);
 	string url = CBRS::SERVER_URL + "api/ods/" + condi_str + "format=json";
 	cpr::Response r = cpr::Get(cpr::Url{ url });
-	return json::parse(r.text)["results"];
+	return json::parse(r.text);
 }

@@ -22,7 +22,7 @@ def index(request):
     index = 0
     for i in pals:
         d = []
-        orders = Order.objects.filter(PAL=i, isFinish=True)
+        orders = Order.objects.filter(PAL=i, isFinish=True)[-500:]
         colour = COLORS[index % len(COLORS)]
         index = index + 1
         for j in orders:

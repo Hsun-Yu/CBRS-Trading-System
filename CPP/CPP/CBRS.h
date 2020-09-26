@@ -28,6 +28,7 @@ namespace CBRS {
 	cpr::Response create_gaa(json gaa);
 
 	cpr::Response update_order(string order_url, json order);
+	cpr::Response update_pal(string order_url, json pal);
 	cpr::Response deal_order(string order_url);
 
 	string condition_json_to_string(json condition);
